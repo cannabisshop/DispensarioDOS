@@ -18,10 +18,18 @@
 
     <style>
         /* Custom styles */
+        :root {
+            --neon-violet: #A020F0;
+            --neon-violet-hover: #BF40BF;
+            --neon-cyan: #08F7FE;
+            --dark-bg: #111827;
+            --card-bg-color: rgba(31, 41, 55, 0.75);
+        }
+
         body {
             font-family: 'Inter', sans-serif;
-            background-color: #111827; /* Dark background */
-            color: #E5E7EB; /* Light text */
+            background-color: var(--dark-bg);
+            color: #E5E7EB;
         }
         html {
             scroll-behavior: smooth;
@@ -29,7 +37,6 @@
         .hero-section {
             background: linear-gradient(rgba(17, 24, 39, 0.8), rgba(17, 24, 39, 0.8)), url('https://hashkiekush.com.ar/assets/images/gallery02/ee53b1ad_original.jpg') no-repeat center center/cover;
         }
-        /* New wrapper for content below hero */
         .content-bg-wrapper {
             position: relative;
             overflow: hidden;
@@ -48,17 +55,19 @@
         }
 
         .card-bg {
-            background-color: rgba(31, 41, 55, 0.75); /* Glassmorphism background */
+            background-color: var(--card-bg-color);
             backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(160, 32, 240, 0.2);
         }
         .btn-primary {
-            background-color: #10B981; /* Emerald green */
-            transition: background-color 0.3s ease, transform 0.3s ease, opacity 0.3s ease;
+            background-color: var(--neon-violet);
+            transition: background-color 0.3s ease, transform 0.3s ease, opacity 0.3s ease, box-shadow 0.3s ease;
+            box-shadow: 0 0 5px var(--neon-violet), 0 0 10px var(--neon-violet);
         }
         .btn-primary:hover:not(:disabled) {
-            background-color: #059669;
+            background-color: var(--neon-violet-hover);
             transform: translateY(-2px);
+            box-shadow: 0 0 10px var(--neon-violet-hover), 0 0 20px var(--neon-violet-hover);
         }
          .btn-secondary {
             background-color: #374151;
@@ -68,9 +77,11 @@
             background-color: #4B5563;
         }
         .section-title {
-            border-bottom: 2px solid #10B981;
+            color: var(--neon-cyan);
+            border-bottom: 2px solid var(--neon-violet);
             padding-bottom: 0.5rem;
             display: inline-block;
+            text-shadow: 0 0 3px var(--neon-cyan);
         }
         .nav-link {
             position: relative;
@@ -84,7 +95,7 @@
             bottom: -4px;
             left: 50%;
             transform: translateX(-50%);
-            background-color: #10B981;
+            background-color: var(--neon-violet);
             transition: width 0.3s ease;
         }
         .nav-link:hover::after {
@@ -95,12 +106,12 @@
         }
         .category-card:hover {
             transform: scale(1.05);
-            box-shadow: 0 10px 20px rgba(16, 185, 129, 0.2);
+            box-shadow: 0 0 15px rgba(160, 32, 240, 0.4);
         }
         /* Shopping Cart Styles */
         #cart-sidebar {
             transition: transform 0.3s ease-in-out;
-            background-color: rgba(31, 41, 55, 0.85); /* Glassmorphism for cart */
+            background-color: rgba(31, 41, 55, 0.85);
             backdrop-filter: blur(10px);
         }
         .cart-item-quantity button {
@@ -110,6 +121,7 @@
         .btn-primary:disabled {
             opacity: 0.5;
             cursor: not-allowed;
+            box-shadow: none;
         }
         /* Location Modal Styles */
         #location-modal label {
@@ -121,11 +133,29 @@
             transition: all 0.2s ease;
         }
         #location-modal input[type="radio"]:checked + label {
-            border-color: #10B981;
-            background-color: rgba(16, 185, 129, 0.1);
+            border-color: var(--neon-violet);
+            background-color: rgba(160, 32, 240, 0.1);
         }
         #location-modal input[type="radio"] {
             display: none;
+        }
+
+        .text-accent {
+            color: var(--neon-cyan);
+        }
+        
+        /* Logo hover effect */
+        @keyframes neon-glow {
+            0%, 100% {
+                text-shadow: 0 0 4px var(--neon-cyan), 0 0 8px var(--neon-cyan);
+            }
+            50% {
+                 text-shadow: 0 0 4px var(--neon-violet), 0 0 8px var(--neon-violet);
+            }
+        }
+        
+        .logo-container:hover .glow-effect {
+            animation: neon-glow 1.5s infinite linear;
         }
     </style>
 </head>
@@ -135,10 +165,10 @@
     <header class="bg-gray-900/80 backdrop-blur-sm sticky top-0 z-50">
         <nav class="container mx-auto px-6 py-4">
             <div class="flex items-center justify-between">
-                <div class="flex items-center space-x-3">
-                    <i class="fas fa-cannabis text-3xl text-emerald-400"></i>
-                    <a href="#" class="text-2xl font-bold text-white">Verde Esencia</a>
-                </div>
+                <a href="https://cannabisshop.github.io/Principal/" target="_blank" class="logo-container flex items-center space-x-3 group">
+                    <i class="fas fa-cannabis text-3xl text-accent glow-effect transition-all duration-300"></i>
+                    <span class="text-2xl font-bold text-white glow-effect transition-all duration-300">Verde Esencia</span>
+                </a>
                 <div class="hidden md:flex items-center space-x-8">
                     <a href="#productos" class="nav-link text-gray-300 hover:text-white">Productos</a>
                     <a href="#categorias" class="nav-link text-gray-300 hover:text-white">Categorías</a>
@@ -190,7 +220,7 @@
                 <!-- Featured Products Section -->
                 <section id="productos" class="py-16 md:py-24">
                     <div class="container mx-auto px-6">
-                        <h2 class="text-3xl md:text-4xl font-bold text-center mb-12 section-title text-white">Productos Destacados</h2>
+                        <h2 class="text-3xl md:text-4xl font-bold text-center mb-12 section-title">Productos Destacados</h2>
                         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
                             <!-- Product Card 1 -->
                             <div class="card-bg rounded-lg overflow-hidden shadow-lg flex flex-col">
@@ -199,7 +229,7 @@
                                     <h3 class="text-xl font-bold text-white mb-2">Amnesia Haze</h3>
                                     <p class="text-gray-300 text-sm mb-4 flex-grow">Sativa dominante, energizante y cítrica. Perfecta para la creatividad y el enfoque diurno.</p>
                                      <div class="flex justify-between items-center mt-4">
-                                        <span class="text-lg font-semibold text-emerald-400">$2,500</span>
+                                        <span class="text-lg font-semibold text-accent">$2,500</span>
                                         <button class="add-to-cart-btn btn-secondary text-white font-semibold py-2 px-4 rounded-lg text-sm" data-id="1" data-name="Amnesia Haze" data-price="2500" data-image="https://placehold.co/100x100/2a3b3b/ffffff?text=Flor">Añadir</button>
                                     </div>
                                 </div>
@@ -211,7 +241,7 @@
                                     <h3 class="text-xl font-bold text-white mb-2">Gomitas de Mango</h3>
                                     <p class="text-gray-300 text-sm mb-4 flex-grow">Deliciosas gomitas con 10mg de THC por unidad. Efecto corporal relajante y duradero.</p>
                                     <div class="flex justify-between items-center mt-4">
-                                        <span class="text-lg font-semibold text-emerald-400">$3,000</span>
+                                        <span class="text-lg font-semibold text-accent">$3,000</span>
                                         <button class="add-to-cart-btn btn-secondary text-white font-semibold py-2 px-4 rounded-lg text-sm" data-id="2" data-name="Gomitas de Mango" data-price="3000" data-image="https://placehold.co/100x100/3b2a3b/ffffff?text=Gomita">Añadir</button>
                                     </div>
                                 </div>
@@ -223,7 +253,7 @@
                                     <h3 class="text-xl font-bold text-white mb-2">Live Resin "OG Kush"</h3>
                                     <p class="text-gray-300 text-sm mb-4 flex-grow">Extracción de alta potencia con un perfil de terpenos terroso y pino. Ideal para expertos.</p>
                                     <div class="flex justify-between items-center mt-4">
-                                        <span class="text-lg font-semibold text-emerald-400">$4,200</span>
+                                        <span class="text-lg font-semibold text-accent">$4,200</span>
                                         <button class="add-to-cart-btn btn-secondary text-white font-semibold py-2 px-4 rounded-lg text-sm" data-id="3" data-name="Live Resin 'OG Kush'" data-price="4200" data-image="https://placehold.co/100x100/3b3b2a/ffffff?text=Resin">Añadir</button>
                                     </div>
                                 </div>
@@ -235,7 +265,7 @@
                                     <h3 class="text-xl font-bold text-white mb-2">Vaporizador Portátil VX3</h3>
                                     <p class="text-gray-300 text-sm mb-4 flex-grow">Discreto y eficiente. Calentamiento cerámico para un sabor puro y vapor suave.</p>
                                     <div class="flex justify-between items-center mt-4">
-                                        <span class="text-lg font-semibold text-emerald-400">$15,000</span>
+                                        <span class="text-lg font-semibold text-accent">$15,000</span>
                                         <button class="add-to-cart-btn btn-secondary text-white font-semibold py-2 px-4 rounded-lg text-sm" data-id="4" data-name="Vaporizador VX3" data-price="15000" data-image="https://placehold.co/100x100/3b2a2a/ffffff?text=Vape">Añadir</button>
                                     </div>
                                 </div>
@@ -250,19 +280,19 @@
                         <h2 class="text-3xl md:text-4xl font-bold text-center mb-12 section-title">Explora Nuestras Categorías</h2>
                         <div class="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
                             <a href="#flores-detalle" id="flores-category-link" class="category-card card-bg p-8 rounded-lg block flex flex-col items-center justify-center">
-                                <i class="fas fa-leaf text-5xl text-emerald-400 mb-4"></i>
+                                <i class="fas fa-leaf text-5xl text-accent mb-4"></i>
                                 <h3 class="text-xl font-bold text-white">Flores</h3>
                             </a>
                             <a href="#comestibles-detalle" id="comestibles-category-link" class="category-card card-bg p-8 rounded-lg block flex flex-col items-center justify-center">
-                                <i class="fas fa-cookie-bite text-5xl text-emerald-400 mb-4"></i>
+                                <i class="fas fa-cookie-bite text-5xl text-accent mb-4"></i>
                                 <h3 class="text-xl font-bold text-white">Comestibles</h3>
                             </a>
                             <a href="#concentrados-detalle" id="concentrados-category-link" class="category-card card-bg p-8 rounded-lg block flex flex-col items-center justify-center">
-                                <i class="fas fa-vial text-5xl text-emerald-400 mb-4"></i>
+                                <i class="fas fa-vial text-5xl text-accent mb-4"></i>
                                 <h3 class="text-xl font-bold text-white">Concentrados</h3>
                             </a>
                             <a href="#" class="category-card card-bg p-8 rounded-lg block flex flex-col items-center justify-center">
-                                <i class="fas fa-bong text-5xl text-emerald-400 mb-4"></i>
+                                <i class="fas fa-bong text-5xl text-accent mb-4"></i>
                                 <h3 class="text-xl font-bold text-white">Accesorios</h3>
                             </a>
                         </div>
@@ -302,10 +332,10 @@
                                 <div class="card-bg p-8 rounded-lg flex-grow text-left">
                                     <h3 class="text-2xl font-bold text-white mb-4">Sucursal Palermo</h3>
                                     <div class="space-y-4 text-gray-300">
-                                        <p><i class="fas fa-map-marker-alt w-6 text-emerald-400"></i> Jorge Luis Borges 1700, CABA</p>
-                                        <p><i class="fas fa-phone w-6 text-emerald-400"></i> (011) 4555-1234</p>
-                                        <p><i class="fas fa-envelope w-6 text-emerald-400"></i> info@verdeesencia.com.ar</p>
-                                        <p><i class="fas fa-clock w-6 text-emerald-400"></i> Lunes a Sábado: 10:00 - 20:00</p>
+                                        <p><i class="fas fa-map-marker-alt w-6 text-accent"></i> Jorge Luis Borges 1700, CABA</p>
+                                        <p><i class="fas fa-phone w-6 text-accent"></i> (011) 4555-1234</p>
+                                        <p><i class="fas fa-envelope w-6 text-accent"></i> info@verdeesencia.com.ar</p>
+                                        <p><i class="fas fa-clock w-6 text-accent"></i> Lunes a Sábado: 10:00 - 20:00</p>
                                     </div>
                                     <div class="mt-6 flex space-x-4">
                                         <a href="https://www.google.com/maps/dir/?api=1&destination=-34.5886363,-58.4276541" target="_blank" class="flex-1 btn-secondary text-white font-semibold py-2 px-4 rounded-lg text-sm text-center">Google Maps</a>
@@ -321,10 +351,10 @@
                                 <div class="card-bg p-8 rounded-lg flex-grow text-left">
                                     <h3 class="text-2xl font-bold text-white mb-4">Sucursal San Telmo</h3>
                                     <div class="space-y-4 text-gray-300">
-                                        <p><i class="fas fa-map-marker-alt w-6 text-emerald-400"></i> Defensa 900, CABA</p>
-                                        <p><i class="fas fa-phone w-6 text-emerald-400"></i> (011) 4333-5678</p>
-                                        <p><i class="fas fa-envelope w-6 text-emerald-400"></i> santelmo@verdeesencia.com.ar</p>
-                                        <p><i class="fas fa-clock w-6 text-emerald-400"></i> Martes a Domingo: 12:00 - 22:00</p>
+                                        <p><i class="fas fa-map-marker-alt w-6 text-accent"></i> Defensa 900, CABA</p>
+                                        <p><i class="fas fa-phone w-6 text-accent"></i> (011) 4333-5678</p>
+                                        <p><i class="fas fa-envelope w-6 text-accent"></i> santelmo@verdeesencia.com.ar</p>
+                                        <p><i class="fas fa-clock w-6 text-accent"></i> Martes a Domingo: 12:00 - 22:00</p>
                                     </div>
                                     <div class="mt-6 flex space-x-4">
                                         <a href="https://www.google.com/maps/dir/?api=1&destination=-34.6178051,-58.3721865" target="_blank" class="flex-1 btn-secondary text-white font-semibold py-2 px-4 rounded-lg text-sm text-center">Google Maps</a>
@@ -341,7 +371,7 @@
             <section id="flores-detalle" class="py-16 md:py-24 hidden">
                 <div class="container mx-auto px-6">
                     <div class="flex justify-between items-center mb-12">
-                         <h2 class="text-3xl md:text-4xl font-bold section-title text-white">Nuestras Flores</h2>
+                         <h2 class="text-3xl md:text-4xl font-bold section-title">Nuestras Flores</h2>
                          <button class="back-to-main-btn btn-primary text-white font-semibold py-2 px-4 rounded-lg flex items-center">
                             <i class="fas fa-arrow-left mr-2"></i>Volver
                          </button>
@@ -354,7 +384,7 @@
                                 <h3 class="text-xl font-bold text-white mb-2">Brat Berry Strain</h3>
                                 <p class="text-gray-300 text-sm mb-4 flex-grow">Cultivo Vivo Exótica AAA - Debés tener más de 21 años para comprar. Todos los productos de cáñamo que se venden cumplen con la normativa federal, con menos de 0,3% de THC Delta 9. Cada producto de cáñamo incluye un certificado de análisis (COA) en su página correspondiente, donde podés ver su potencia y cumplimiento legal.</p>
                                 <div class="flex justify-between items-center mt-4">
-                                    <span class="text-lg font-semibold text-emerald-400">$3,200</span>
+                                    <span class="text-lg font-semibold text-accent">$3,200</span>
                                     <button class="add-to-cart-btn btn-secondary text-white font-semibold py-2 px-4 rounded-lg text-sm" data-id="5" data-name="Brat Berry Strain" data-price="3200" data-image="https://placehold.co/100x100/c72c41/ffffff?text=Brat">Añadir</button>
                                 </div>
                             </div>
@@ -366,7 +396,7 @@
                                 <h3 class="text-xl font-bold text-white mb-2">Death Star Strain</h3>
                                 <p class="text-gray-300 text-sm mb-4 flex-grow">Light Assist Deal - Debés tener más de 21 años para comprar. Todos los productos de cáñamo que se venden cumplen con la normativa federal, con menos de 0,3% de THC Delta 9. Cada producto de cáñamo incluye un certificado de análisis (COA) en su página correspondiente, donde podés ver su potencia y cumplimiento legal.</p>
                                  <div class="flex justify-between items-center mt-4">
-                                    <span class="text-lg font-semibold text-emerald-400">$2,800</span>
+                                    <span class="text-lg font-semibold text-accent">$2,800</span>
                                     <button class="add-to-cart-btn btn-secondary text-white font-semibold py-2 px-4 rounded-lg text-sm" data-id="6" data-name="Death Star Strain" data-price="2800" data-image="https://placehold.co/100x100/3d405b/ffffff?text=Death">Añadir</button>
                                 </div>
                             </div>
@@ -378,7 +408,7 @@
                                 <h3 class="text-xl font-bold text-white mb-2">Pink Rozay Strain THCa Flower</h3>
                                 <p class="text-gray-300 text-sm mb-4 flex-grow">Cultivo Vivo Exótica AAA - Debés tener más de 21 años para comprar. Todos los productos de cáñamo que se venden cumplen con la normativa federal, con menos de 0,3% de THC Delta 9. Cada producto de cáñamo incluye un certificado de análisis (COA) en su página correspondiente, donde podés ver su potencia y cumplimiento legal.</p>
                                 <div class="flex justify-between items-center mt-4">
-                                    <span class="text-lg font-semibold text-emerald-400">$3,500</span>
+                                    <span class="text-lg font-semibold text-accent">$3,500</span>
                                     <button class="add-to-cart-btn btn-secondary text-white font-semibold py-2 px-4 rounded-lg text-sm" data-id="7" data-name="Pink Rozay Strain" data-price="3500" data-image="https://placehold.co/100x100/f28482/ffffff?text=Pink">Añadir</button>
                                 </div>
                             </div>
@@ -391,7 +421,7 @@
             <section id="comestibles-detalle" class="py-16 md:py-24 hidden">
                 <div class="container mx-auto px-6">
                     <div class="flex justify-between items-center mb-12">
-                         <h2 class="text-3xl md:text-4xl font-bold section-title text-white">Nuestros Comestibles</h2>
+                         <h2 class="text-3xl md:text-4xl font-bold section-title">Nuestros Comestibles</h2>
                          <button class="back-to-main-btn btn-primary text-white font-semibold py-2 px-4 rounded-lg flex items-center">
                             <i class="fas fa-arrow-left mr-2"></i>Volver
                          </button>
@@ -404,7 +434,7 @@
                                 <h3 class="text-xl font-bold text-white mb-2">Cookies de Chocolate Chip</h3>
                                 <p class="text-gray-300 text-sm mb-4 flex-grow">Un clásico que nunca falla. Crujientes por fuera, suaves por dentro y con chispas de chocolate semiamargo. Cada cookie contiene 10mg de THC, ideal para un efecto equilibrado y alegre. Perfectas para compartir o disfrutar en una tarde tranquila. Recomendamos empezar con media cookie.</p>
                                 <div class="flex justify-between items-center mt-4">
-                                    <span class="text-lg font-semibold text-emerald-400">$1,200</span>
+                                    <span class="text-lg font-semibold text-accent">$1,200</span>
                                     <button class="add-to-cart-btn btn-secondary text-white font-semibold py-2 px-4 rounded-lg text-sm" data-id="8" data-name="Cookie de Chocolate" data-price="1200" data-image="https://placehold.co/100x100/8c5a3e/ffffff?text=Cookie">Añadir</button>
                                 </div>
                             </div>
@@ -416,7 +446,7 @@
                                 <h3 class="text-xl font-bold text-white mb-2">Brownie Fudgy de Cacao</h3>
                                 <p class="text-gray-300 text-sm mb-4 flex-grow">Intenso, denso y chocolatoso. Este brownie está hecho con cacao puro y tiene un corazón fudgy irresistible. Con 20mg de THC, proporciona un efecto profundamente relajante a nivel corporal. Ideal para desconectar al final del día. Consumir con precaución, su efecto es potente.</p>
                                  <div class="flex justify-between items-center mt-4">
-                                    <span class="text-lg font-semibold text-emerald-400">$1,800</span>
+                                    <span class="text-lg font-semibold text-accent">$1,800</span>
                                     <button class="add-to-cart-btn btn-secondary text-white font-semibold py-2 px-4 rounded-lg text-sm" data-id="9" data-name="Brownie de Cacao" data-price="1800" data-image="https://placehold.co/100x100/4a2c2a/ffffff?text=Brownie">Añadir</button>
                                 </div>
                             </div>
@@ -428,7 +458,7 @@
                                 <h3 class="text-xl font-bold text-white mb-2">Mini Pizza Infusionada</h3>
                                 <p class="text-gray-300 text-sm mb-4 flex-grow">¿Buscas algo salado? Nuestra mini pizza individual viene con una base crujiente, salsa de tomate casera, mozzarella y aceite de oliva infusionado con 15mg de THC. Una experiencia cannábica gourmet única, perfecta para un aperitivo o una cena ligera. El efecto es social y eufórico.</p>
                                 <div class="flex justify-between items-center mt-4">
-                                    <span class="text-lg font-semibold text-emerald-400">$2,500</span>
+                                    <span class="text-lg font-semibold text-accent">$2,500</span>
                                     <button class="add-to-cart-btn btn-secondary text-white font-semibold py-2 px-4 rounded-lg text-sm" data-id="10" data-name="Mini Pizza Infusionada" data-price="2500" data-image="https://placehold.co/100x100/d9480f/ffffff?text=Pizza">Añadir</button>
                                 </div>
                             </div>
@@ -441,7 +471,7 @@
             <section id="concentrados-detalle" class="py-16 md:py-24 hidden">
                 <div class="container mx-auto px-6">
                     <div class="flex justify-between items-center mb-12">
-                         <h2 class="text-3xl md:text-4xl font-bold section-title text-white">Nuestros Concentrados</h2>
+                         <h2 class="text-3xl md:text-4xl font-bold section-title">Nuestros Concentrados</h2>
                          <button class="back-to-main-btn btn-primary text-white font-semibold py-2 px-4 rounded-lg flex items-center">
                             <i class="fas fa-arrow-left mr-2"></i>Volver
                          </button>
@@ -454,7 +484,7 @@
                                 <h3 class="text-xl font-bold text-white mb-2">Shatter</h3>
                                 <p class="text-gray-300 text-sm mb-4 flex-grow"><strong>Forma:</strong> Liso, translúcido y quebradizo como vidrio.<br><strong>Textura:</strong> Sólido a temperatura ambiente.<br><strong>Potencia:</strong> Alta (hasta 80-90% THC).<br><strong>Uso típico:</strong> Dabbing.<br><strong>Popularidad:</strong> Muy alto por su pureza y estética.</p>
                                 <div class="flex justify-between items-center mt-4">
-                                    <span class="text-lg font-semibold text-emerald-400">$4,800</span>
+                                    <span class="text-lg font-semibold text-accent">$4,800</span>
                                     <button class="add-to-cart-btn btn-secondary text-white font-semibold py-2 px-4 rounded-lg text-sm" data-id="11" data-name="Shatter" data-price="4800" data-image="https://placehold.co/100x100/f7b801/ffffff?text=Shatter">Añadir</button>
                                 </div>
                             </div>
@@ -466,7 +496,7 @@
                                 <h3 class="text-xl font-bold text-white mb-2">Budder / Batter</h3>
                                 <p class="text-gray-300 text-sm mb-4 flex-grow"><strong>Forma:</strong> Cremoso, parecido a manteca batida.<br><strong>Textura:</strong> Suave, fácil de manipular.<br><strong>Potencia:</strong> Alta.<br><strong>Uso:</strong> Dabbing o vaporización.<br><strong>Ventaja:</strong> Más fácil de manejar que el shatter.</p>
                                  <div class="flex justify-between items-center mt-4">
-                                    <span class="text-lg font-semibold text-emerald-400">$4,500</span>
+                                    <span class="text-lg font-semibold text-accent">$4,500</span>
                                     <button class="add-to-cart-btn btn-secondary text-white font-semibold py-2 px-4 rounded-lg text-sm" data-id="12" data-name="Budder / Batter" data-price="4500" data-image="https://placehold.co/100x100/f3dca3/1f2937?text=Budder">Añadir</button>
                                 </div>
                             </div>
@@ -478,7 +508,7 @@
                                 <h3 class="text-xl font-bold text-white mb-2">Live Rosin</h3>
                                 <p class="text-gray-300 text-sm mb-4 flex-grow"><strong>Extracción:</strong> Sin solventes (presión y calor).<br><strong>Textura:</strong> Cremosa o pegajosa.<br><strong>Popularidad:</strong> Alta en mercados orgánicos o "limpios".<br><strong>Valor:</strong> Más caro por ser artesanal y sin químicos.</p>
                                 <div class="flex justify-between items-center mt-4">
-                                    <span class="text-lg font-semibold text-emerald-400">$6,000</span>
+                                    <span class="text-lg font-semibold text-accent">$6,000</span>
                                     <button class="add-to-cart-btn btn-secondary text-white font-semibold py-2 px-4 rounded-lg text-sm" data-id="13" data-name="Live Rosin" data-price="6000" data-image="https://placehold.co/100x100/f3e5ab/1f2937?text=Rosin">Añadir</button>
                                 </div>
                             </div>
@@ -494,11 +524,11 @@
     <footer class="bg-gray-900 border-t border-gray-700">
         <div class="container mx-auto px-6 py-8">
             <div class="flex flex-col md:flex-row justify-between items-center text-center md:text-left">
-                <p class="text-gray-400 mb-4 md:mb-0">&copy; 2025 Verde Esencia. Todos los derechos reservados, By Juan M Barrientos.</p>
+                <p class="text-gray-400 mb-4 md:mb-0">&copy; 2024 Verde Esencia. Todos los derechos reservados.</p>
                 <div class="flex space-x-4 mb-4 md:mb-0">
-                    <a href="#" class="text-gray-400 hover:text-emerald-400 transition"><i class="fab fa-instagram text-2xl"></i></a>
-                    <a href="#" class="text-gray-400 hover:text-emerald-400 transition"><i class="fab fa-facebook text-2xl"></i></a>
-                    <a href="#" class="text-gray-400 hover:text-emerald-400 transition"><i class="fab fa-twitter text-2xl"></i></a>
+                    <a href="#" class="text-gray-400 hover:text-accent transition"><i class="fab fa-instagram text-2xl"></i></a>
+                    <a href="#" class="text-gray-400 hover:text-accent transition"><i class="fab fa-facebook text-2xl"></i></a>
+                    <a href="#" class="text-gray-400 hover:text-accent transition"><i class="fab fa-twitter text-2xl"></i></a>
                 </div>
                 <p class="text-xs text-gray-500 max-w-sm">El consumo de cannabis es responsabilidad del usuario. Producto para mayores de 21 años. Consulta a tu médico.</p>
             </div>
@@ -521,7 +551,7 @@
         <div class="p-4 border-t border-gray-700">
             <div class="flex justify-between items-center mb-4">
                 <span class="text-lg font-semibold">Subtotal:</span>
-                <span id="cart-subtotal" class="text-lg font-bold text-emerald-400">$0</span>
+                <span id="cart-subtotal" class="text-lg font-bold text-accent">$0</span>
             </div>
             <button id="checkout-btn" class="w-full btn-primary text-white font-bold py-3 rounded-lg">Finalizar Compra</button>
         </div>
