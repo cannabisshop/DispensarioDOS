@@ -1,0 +1,811 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dispensario Verde Esencia - Calidad y Confianza</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Google Fonts: Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- Font Awesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+    <style>
+        /* Custom styles */
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #111827; /* Dark background */
+            color: #E5E7EB; /* Light text */
+        }
+        html {
+            scroll-behavior: smooth;
+        }
+        .hero-section {
+            background: linear-gradient(rgba(17, 24, 39, 0.8), rgba(17, 24, 39, 0.8)), url('https://hashkiekush.com.ar/assets/images/gallery02/ee53b1ad_original.jpg') no-repeat center center/cover;
+        }
+        /* New wrapper for content below hero */
+        .content-bg-wrapper {
+            position: relative;
+            overflow: hidden;
+        }
+        .content-bg-wrapper::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('https://hashkiekush.com.ar/assets/images/gallery02/219bd3cb_original.jpg') no-repeat center center/cover;
+            background-attachment: fixed;
+            filter: brightness(0.6);
+            z-index: -1;
+        }
+
+        .card-bg {
+            background-color: rgba(31, 41, 55, 0.75); /* Glassmorphism background */
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        .btn-primary {
+            background-color: #10B981; /* Emerald green */
+            transition: background-color 0.3s ease, transform 0.3s ease, opacity 0.3s ease;
+        }
+        .btn-primary:hover:not(:disabled) {
+            background-color: #059669;
+            transform: translateY(-2px);
+        }
+         .btn-secondary {
+            background-color: #374151;
+            transition: background-color 0.3s ease;
+        }
+        .btn-secondary:hover {
+            background-color: #4B5563;
+        }
+        .section-title {
+            border-bottom: 2px solid #10B981;
+            padding-bottom: 0.5rem;
+            display: inline-block;
+        }
+        .nav-link {
+            position: relative;
+            transition: color 0.3s ease;
+        }
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: -4px;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: #10B981;
+            transition: width 0.3s ease;
+        }
+        .nav-link:hover::after {
+            width: 100%;
+        }
+        .category-card {
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .category-card:hover {
+            transform: scale(1.05);
+            box-shadow: 0 10px 20px rgba(16, 185, 129, 0.2);
+        }
+        /* Shopping Cart Styles */
+        #cart-sidebar {
+            transition: transform 0.3s ease-in-out;
+            background-color: rgba(31, 41, 55, 0.85); /* Glassmorphism for cart */
+            backdrop-filter: blur(10px);
+        }
+        .cart-item-quantity button {
+            width: 28px;
+            height: 28px;
+        }
+        .btn-primary:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+        /* Location Modal Styles */
+        #location-modal label {
+            display: block;
+            padding: 1rem;
+            border: 2px solid #374151;
+            border-radius: 0.5rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        #location-modal input[type="radio"]:checked + label {
+            border-color: #10B981;
+            background-color: rgba(16, 185, 129, 0.1);
+        }
+        #location-modal input[type="radio"] {
+            display: none;
+        }
+    </style>
+</head>
+<body class="antialiased">
+
+    <!-- Header & Navigation -->
+    <header class="bg-gray-900/80 backdrop-blur-sm sticky top-0 z-50">
+        <nav class="container mx-auto px-6 py-4">
+            <div class="flex items-center justify-between">
+                <div class="flex items-center space-x-3">
+                    <i class="fas fa-cannabis text-3xl text-emerald-400"></i>
+                    <a href="#" class="text-2xl font-bold text-white">Verde Esencia</a>
+                </div>
+                <div class="hidden md:flex items-center space-x-8">
+                    <a href="#productos" class="nav-link text-gray-300 hover:text-white">Productos</a>
+                    <a href="#categorias" class="nav-link text-gray-300 hover:text-white">Categorías</a>
+                    <a href="#nosotros" class="nav-link text-gray-300 hover:text-white">Nosotros</a>
+                    <a href="#contacto" class="nav-link text-gray-300 hover:text-white">Contacto</a>
+                </div>
+                <div class="flex items-center space-x-4">
+                     <!-- Cart Icon -->
+                    <button id="cart-icon" class="relative text-white focus:outline-none">
+                        <i class="fas fa-shopping-cart text-2xl"></i>
+                        <span id="cart-count" class="absolute -top-2 -right-2 bg-red-600 text-xs w-5 h-5 rounded-full flex items-center justify-center">0</span>
+                    </button>
+                    <div class="md:hidden">
+                        <button id="mobile-menu-button" class="text-white focus:outline-none">
+                            <i class="fas fa-bars text-2xl"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <!-- Mobile Menu -->
+            <div id="mobile-menu" class="hidden md:hidden mt-4">
+                <a href="#productos" class="block py-2 px-4 text-sm text-gray-300 hover:bg-gray-700 rounded">Productos</a>
+                <a href="#categorias" class="block py-2 px-4 text-sm text-gray-300 hover:bg-gray-700 rounded">Categorías</a>
+                <a href="#nosotros" class="block py-2 px-4 text-sm text-gray-300 hover:bg-gray-700 rounded">Nosotros</a>
+                <a href="#contacto" class="block py-2 px-4 text-sm text-gray-300 hover:bg-gray-700 rounded">Contacto</a>
+            </div>
+        </nav>
+    </header>
+
+    <main>
+        <!-- Hero Section -->
+        <section class="hero-section h-[60vh] md:h-[80vh] flex items-center justify-center text-center">
+            <div class="container mx-auto px-6">
+                <h1 class="text-4xl md:text-6xl font-extrabold text-white leading-tight mb-4 tracking-wide" style="text-shadow: 2px 2px 8px rgba(0,0,0,0.7);">
+                    Descubre la Esencia de la Naturaleza
+                </h1>
+                <p class="text-lg md:text-xl text-gray-200 max-w-3xl mx-auto mb-8">
+                    Productos de cannabis seleccionados por expertos para garantizar la máxima calidad y pureza.
+                </p>
+                <a href="#productos" class="btn-primary text-white font-bold py-3 px-8 rounded-full text-lg shadow-lg">
+                    Explorar Productos
+                </a>
+            </div>
+        </section>
+
+        <!-- Wrapper for content with new background -->
+        <div class="content-bg-wrapper">
+            <div id="main-content">
+                <!-- Featured Products Section -->
+                <section id="productos" class="py-16 md:py-24">
+                    <div class="container mx-auto px-6">
+                        <h2 class="text-3xl md:text-4xl font-bold text-center mb-12 section-title text-white">Productos Destacados</h2>
+                        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+                            <!-- Product Card 1 -->
+                            <div class="card-bg rounded-lg overflow-hidden shadow-lg flex flex-col">
+                                <img src="https://placehold.co/400x300/2a3b3b/ffffff?text=Flor+Premium" alt="Flor de Cannabis Premium" class="w-full h-48 object-cover">
+                                <div class="p-6 flex flex-col flex-grow">
+                                    <h3 class="text-xl font-bold text-white mb-2">Amnesia Haze</h3>
+                                    <p class="text-gray-300 text-sm mb-4 flex-grow">Sativa dominante, energizante y cítrica. Perfecta para la creatividad y el enfoque diurno.</p>
+                                     <div class="flex justify-between items-center mt-4">
+                                        <span class="text-lg font-semibold text-emerald-400">$2,500</span>
+                                        <button class="add-to-cart-btn btn-secondary text-white font-semibold py-2 px-4 rounded-lg text-sm" data-id="1" data-name="Amnesia Haze" data-price="2500" data-image="https://placehold.co/100x100/2a3b3b/ffffff?text=Flor">Añadir</button>
+                                    </div>
+                                </div>
+                            </div>
+                             <!-- Product Card 2 -->
+                            <div class="card-bg rounded-lg overflow-hidden shadow-lg flex flex-col">
+                                <img src="https://placehold.co/400x300/3b2a3b/ffffff?text=Comestible" alt="Comestible de Cannabis" class="w-full h-48 object-cover">
+                                <div class="p-6 flex flex-col flex-grow">
+                                    <h3 class="text-xl font-bold text-white mb-2">Gomitas de Mango</h3>
+                                    <p class="text-gray-300 text-sm mb-4 flex-grow">Deliciosas gomitas con 10mg de THC por unidad. Efecto corporal relajante y duradero.</p>
+                                    <div class="flex justify-between items-center mt-4">
+                                        <span class="text-lg font-semibold text-emerald-400">$3,000</span>
+                                        <button class="add-to-cart-btn btn-secondary text-white font-semibold py-2 px-4 rounded-lg text-sm" data-id="2" data-name="Gomitas de Mango" data-price="3000" data-image="https://placehold.co/100x100/3b2a3b/ffffff?text=Gomita">Añadir</button>
+                                    </div>
+                                </div>
+                            </div>
+                             <!-- Product Card 3 -->
+                            <div class="card-bg rounded-lg overflow-hidden shadow-lg flex flex-col">
+                                <img src="https://placehold.co/400x300/3b3b2a/ffffff?text=Concentrado" alt="Concentrado de Cannabis" class="w-full h-48 object-cover">
+                                <div class="p-6 flex flex-col flex-grow">
+                                    <h3 class="text-xl font-bold text-white mb-2">Live Resin "OG Kush"</h3>
+                                    <p class="text-gray-300 text-sm mb-4 flex-grow">Extracción de alta potencia con un perfil de terpenos terroso y pino. Ideal para expertos.</p>
+                                    <div class="flex justify-between items-center mt-4">
+                                        <span class="text-lg font-semibold text-emerald-400">$4,200</span>
+                                        <button class="add-to-cart-btn btn-secondary text-white font-semibold py-2 px-4 rounded-lg text-sm" data-id="3" data-name="Live Resin 'OG Kush'" data-price="4200" data-image="https://placehold.co/100x100/3b3b2a/ffffff?text=Resin">Añadir</button>
+                                    </div>
+                                </div>
+                            </div>
+                             <!-- Product Card 4 -->
+                            <div class="card-bg rounded-lg overflow-hidden shadow-lg flex flex-col">
+                                <img src="https://placehold.co/400x300/3b2a2a/ffffff?text=Vaporizador" alt="Vaporizador" class="w-full h-48 object-cover">
+                                <div class="p-6 flex flex-col flex-grow">
+                                    <h3 class="text-xl font-bold text-white mb-2">Vaporizador Portátil VX3</h3>
+                                    <p class="text-gray-300 text-sm mb-4 flex-grow">Discreto y eficiente. Calentamiento cerámico para un sabor puro y vapor suave.</p>
+                                    <div class="flex justify-between items-center mt-4">
+                                        <span class="text-lg font-semibold text-emerald-400">$15,000</span>
+                                        <button class="add-to-cart-btn btn-secondary text-white font-semibold py-2 px-4 rounded-lg text-sm" data-id="4" data-name="Vaporizador VX3" data-price="15000" data-image="https://placehold.co/100x100/3b2a2a/ffffff?text=Vape">Añadir</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Categories Section -->
+                <section id="categorias" class="py-16 md:py-24">
+                    <div class="container mx-auto px-6">
+                        <h2 class="text-3xl md:text-4xl font-bold text-center mb-12 section-title">Explora Nuestras Categorías</h2>
+                        <div class="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
+                            <a href="#flores-detalle" id="flores-category-link" class="category-card card-bg p-8 rounded-lg block flex flex-col items-center justify-center">
+                                <i class="fas fa-leaf text-5xl text-emerald-400 mb-4"></i>
+                                <h3 class="text-xl font-bold text-white">Flores</h3>
+                            </a>
+                            <a href="#comestibles-detalle" id="comestibles-category-link" class="category-card card-bg p-8 rounded-lg block flex flex-col items-center justify-center">
+                                <i class="fas fa-cookie-bite text-5xl text-emerald-400 mb-4"></i>
+                                <h3 class="text-xl font-bold text-white">Comestibles</h3>
+                            </a>
+                            <a href="#concentrados-detalle" id="concentrados-category-link" class="category-card card-bg p-8 rounded-lg block flex flex-col items-center justify-center">
+                                <i class="fas fa-vial text-5xl text-emerald-400 mb-4"></i>
+                                <h3 class="text-xl font-bold text-white">Concentrados</h3>
+                            </a>
+                            <a href="#" class="category-card card-bg p-8 rounded-lg block flex flex-col items-center justify-center">
+                                <i class="fas fa-bong text-5xl text-emerald-400 mb-4"></i>
+                                <h3 class="text-xl font-bold text-white">Accesorios</h3>
+                            </a>
+                        </div>
+                    </div>
+                </section>
+                
+                <!-- About Us Section -->
+                <section id="nosotros" class="py-16 md:py-24">
+                    <div class="container mx-auto px-6">
+                        <div class="flex flex-col md:flex-row items-center gap-12">
+                            <div class="md:w-1/2">
+                                <img src="https://placehold.co/600x400/1f2937/10b981?text=Nuestro+Equipo" alt="Interior del dispensario" class="rounded-lg shadow-2xl w-full">
+                            </div>
+                            <div class="md:w-1/2">
+                                <h2 class="text-3xl md:text-4xl font-bold mb-6 section-title">Nuestra Filosofía</h2>
+                                <p class="text-gray-300 mb-4">
+                                    En Verde Esencia, creemos en el poder del cannabis para mejorar el bienestar. Nacimos de la pasión por la planta y el deseo de crear un espacio seguro, educativo y acogedor para nuestra comunidad.
+                                </p>
+                                <p class="text-gray-300">
+                                    Nuestro equipo está formado por expertos conocedores que te guiarán para encontrar el producto perfecto para tus necesidades. Nos comprometemos con la calidad, la transparencia y la educación del consumidor.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Contact & Location Section -->
+                <section id="contacto" class="py-16 md:py-24">
+                    <div class="container mx-auto px-6 text-center">
+                        <h2 class="text-3xl md:text-4xl font-bold mb-12 section-title">Visítanos</h2>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-12">
+                            <!-- Branch 1: Palermo -->
+                            <div class="flex flex-col">
+                                <div class="w-full h-80 rounded-lg overflow-hidden shadow-lg mb-6">
+                                    <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3284.88795507198!2d-58.4298458847704!3d-34.5817299804652!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x95bcca62d852aead%3A0x4a7324ae15c6d37b!2sPlaza%20Serrano!5e0!3m2!1ses!2sar!4v1684335033486!5m2!1ses!2sar" width="100%" height="100%" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+                                </div>
+                                <div class="card-bg p-8 rounded-lg flex-grow text-left">
+                                    <h3 class="text-2xl font-bold text-white mb-4">Sucursal Palermo</h3>
+                                    <div class="space-y-4 text-gray-300">
+                                        <p><i class="fas fa-map-marker-alt w-6 text-emerald-400"></i> Jorge Luis Borges 1700, CABA</p>
+                                        <p><i class="fas fa-phone w-6 text-emerald-400"></i> (011) 4555-1234</p>
+                                        <p><i class="fas fa-envelope w-6 text-emerald-400"></i> info@verdeesencia.com.ar</p>
+                                        <p><i class="fas fa-clock w-6 text-emerald-400"></i> Lunes a Sábado: 10:00 - 20:00</p>
+                                    </div>
+                                    <div class="mt-6 flex space-x-4">
+                                        <a href="https://www.google.com/maps/dir/?api=1&destination=-34.5886363,-58.4276541" target="_blank" class="flex-1 btn-secondary text-white font-semibold py-2 px-4 rounded-lg text-sm text-center">Google Maps</a>
+                                        <a href="https://waze.com/ul?ll=-34.5886363,-58.4276541&navigate=yes" target="_blank" class="flex-1 btn-secondary text-white font-semibold py-2 px-4 rounded-lg text-sm text-center">Waze</a>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- Branch 2: San Telmo -->
+                            <div class="flex flex-col">
+                                <div class="w-full h-80 rounded-lg overflow-hidden shadow-lg mb-6">
+                                    <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3283.31681283624!2d-58.3743774847693!3d-34.6214539804547!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x95a334d4a88c36c3%3A0x95535914a2503a4!2sDefensa%20900%2C%20C1065%20AAS%2C%20Buenos%20Aires!5e0!3m2!1ses!2sar!4v1684335102552!5m2!1ses!2sar" width="100%" height="100%" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+                                </div>
+                                <div class="card-bg p-8 rounded-lg flex-grow text-left">
+                                    <h3 class="text-2xl font-bold text-white mb-4">Sucursal San Telmo</h3>
+                                    <div class="space-y-4 text-gray-300">
+                                        <p><i class="fas fa-map-marker-alt w-6 text-emerald-400"></i> Defensa 900, CABA</p>
+                                        <p><i class="fas fa-phone w-6 text-emerald-400"></i> (011) 4333-5678</p>
+                                        <p><i class="fas fa-envelope w-6 text-emerald-400"></i> santelmo@verdeesencia.com.ar</p>
+                                        <p><i class="fas fa-clock w-6 text-emerald-400"></i> Martes a Domingo: 12:00 - 22:00</p>
+                                    </div>
+                                    <div class="mt-6 flex space-x-4">
+                                        <a href="https://www.google.com/maps/dir/?api=1&destination=-34.6178051,-58.3721865" target="_blank" class="flex-1 btn-secondary text-white font-semibold py-2 px-4 rounded-lg text-sm text-center">Google Maps</a>
+                                        <a href="https://waze.com/ul?ll=-34.6178051,-58.3721865&navigate=yes" target="_blank" class="flex-1 btn-secondary text-white font-semibold py-2 px-4 rounded-lg text-sm text-center">Waze</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+            
+            <!-- Flores Detail Section (hidden by default) -->
+            <section id="flores-detalle" class="py-16 md:py-24 hidden">
+                <div class="container mx-auto px-6">
+                    <div class="flex justify-between items-center mb-12">
+                         <h2 class="text-3xl md:text-4xl font-bold section-title text-white">Nuestras Flores</h2>
+                         <button class="back-to-main-btn btn-primary text-white font-semibold py-2 px-4 rounded-lg flex items-center">
+                            <i class="fas fa-arrow-left mr-2"></i>Volver
+                         </button>
+                    </div>
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                        <!-- Genetica 1 -->
+                        <div class="card-bg rounded-lg overflow-hidden shadow-lg flex flex-col">
+                            <img src="https://placehold.co/400x300/c72c41/ffffff?text=Brat+Berry" alt="Brat Berry Strain" class="w-full h-56 object-cover">
+                            <div class="p-6 flex flex-col flex-grow">
+                                <h3 class="text-xl font-bold text-white mb-2">Brat Berry Strain</h3>
+                                <p class="text-gray-300 text-sm mb-4 flex-grow">Cultivo Vivo Exótica AAA - Debés tener más de 21 años para comprar. Todos los productos de cáñamo que se venden cumplen con la normativa federal, con menos de 0,3% de THC Delta 9. Cada producto de cáñamo incluye un certificado de análisis (COA) en su página correspondiente, donde podés ver su potencia y cumplimiento legal.</p>
+                                <div class="flex justify-between items-center mt-4">
+                                    <span class="text-lg font-semibold text-emerald-400">$3,200</span>
+                                    <button class="add-to-cart-btn btn-secondary text-white font-semibold py-2 px-4 rounded-lg text-sm" data-id="5" data-name="Brat Berry Strain" data-price="3200" data-image="https://placehold.co/100x100/c72c41/ffffff?text=Brat">Añadir</button>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Genetica 2 -->
+                        <div class="card-bg rounded-lg overflow-hidden shadow-lg flex flex-col">
+                            <img src="https://placehold.co/400x300/3d405b/ffffff?text=Death+Star" alt="Death Star Strain" class="w-full h-56 object-cover">
+                            <div class="p-6 flex flex-col flex-grow">
+                                <h3 class="text-xl font-bold text-white mb-2">Death Star Strain</h3>
+                                <p class="text-gray-300 text-sm mb-4 flex-grow">Light Assist Deal - Debés tener más de 21 años para comprar. Todos los productos de cáñamo que se venden cumplen con la normativa federal, con menos de 0,3% de THC Delta 9. Cada producto de cáñamo incluye un certificado de análisis (COA) en su página correspondiente, donde podés ver su potencia y cumplimiento legal.</p>
+                                 <div class="flex justify-between items-center mt-4">
+                                    <span class="text-lg font-semibold text-emerald-400">$2,800</span>
+                                    <button class="add-to-cart-btn btn-secondary text-white font-semibold py-2 px-4 rounded-lg text-sm" data-id="6" data-name="Death Star Strain" data-price="2800" data-image="https://placehold.co/100x100/3d405b/ffffff?text=Death">Añadir</button>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Genetica 3 -->
+                        <div class="card-bg rounded-lg overflow-hidden shadow-lg flex flex-col">
+                            <img src="https://placehold.co/400x300/f28482/ffffff?text=Pink+Rozay" alt="Pink Rozay Strain" class="w-full h-56 object-cover">
+                            <div class="p-6 flex flex-col flex-grow">
+                                <h3 class="text-xl font-bold text-white mb-2">Pink Rozay Strain THCa Flower</h3>
+                                <p class="text-gray-300 text-sm mb-4 flex-grow">Cultivo Vivo Exótica AAA - Debés tener más de 21 años para comprar. Todos los productos de cáñamo que se venden cumplen con la normativa federal, con menos de 0,3% de THC Delta 9. Cada producto de cáñamo incluye un certificado de análisis (COA) en su página correspondiente, donde podés ver su potencia y cumplimiento legal.</p>
+                                <div class="flex justify-between items-center mt-4">
+                                    <span class="text-lg font-semibold text-emerald-400">$3,500</span>
+                                    <button class="add-to-cart-btn btn-secondary text-white font-semibold py-2 px-4 rounded-lg text-sm" data-id="7" data-name="Pink Rozay Strain" data-price="3500" data-image="https://placehold.co/100x100/f28482/ffffff?text=Pink">Añadir</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            
+            <!-- Comestibles Detail Section (hidden by default) -->
+            <section id="comestibles-detalle" class="py-16 md:py-24 hidden">
+                <div class="container mx-auto px-6">
+                    <div class="flex justify-between items-center mb-12">
+                         <h2 class="text-3xl md:text-4xl font-bold section-title text-white">Nuestros Comestibles</h2>
+                         <button class="back-to-main-btn btn-primary text-white font-semibold py-2 px-4 rounded-lg flex items-center">
+                            <i class="fas fa-arrow-left mr-2"></i>Volver
+                         </button>
+                    </div>
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                        <!-- Comestible 1 -->
+                        <div class="card-bg rounded-lg overflow-hidden shadow-lg flex flex-col">
+                            <img src="https://placehold.co/400x300/8c5a3e/ffffff?text=Cookie" alt="Cookie de Chocolate" class="w-full h-56 object-cover">
+                            <div class="p-6 flex flex-col flex-grow">
+                                <h3 class="text-xl font-bold text-white mb-2">Cookies de Chocolate Chip</h3>
+                                <p class="text-gray-300 text-sm mb-4 flex-grow">Un clásico que nunca falla. Crujientes por fuera, suaves por dentro y con chispas de chocolate semiamargo. Cada cookie contiene 10mg de THC, ideal para un efecto equilibrado y alegre. Perfectas para compartir o disfrutar en una tarde tranquila. Recomendamos empezar con media cookie.</p>
+                                <div class="flex justify-between items-center mt-4">
+                                    <span class="text-lg font-semibold text-emerald-400">$1,200</span>
+                                    <button class="add-to-cart-btn btn-secondary text-white font-semibold py-2 px-4 rounded-lg text-sm" data-id="8" data-name="Cookie de Chocolate" data-price="1200" data-image="https://placehold.co/100x100/8c5a3e/ffffff?text=Cookie">Añadir</button>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Comestible 2 -->
+                        <div class="card-bg rounded-lg overflow-hidden shadow-lg flex flex-col">
+                            <img src="https://placehold.co/400x300/4a2c2a/ffffff?text=Brownie" alt="Brownie de Cacao" class="w-full h-56 object-cover">
+                            <div class="p-6 flex flex-col flex-grow">
+                                <h3 class="text-xl font-bold text-white mb-2">Brownie Fudgy de Cacao</h3>
+                                <p class="text-gray-300 text-sm mb-4 flex-grow">Intenso, denso y chocolatoso. Este brownie está hecho con cacao puro y tiene un corazón fudgy irresistible. Con 20mg de THC, proporciona un efecto profundamente relajante a nivel corporal. Ideal para desconectar al final del día. Consumir con precaución, su efecto es potente.</p>
+                                 <div class="flex justify-between items-center mt-4">
+                                    <span class="text-lg font-semibold text-emerald-400">$1,800</span>
+                                    <button class="add-to-cart-btn btn-secondary text-white font-semibold py-2 px-4 rounded-lg text-sm" data-id="9" data-name="Brownie de Cacao" data-price="1800" data-image="https://placehold.co/100x100/4a2c2a/ffffff?text=Brownie">Añadir</button>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Comestible 3 -->
+                        <div class="card-bg rounded-lg overflow-hidden shadow-lg flex flex-col">
+                            <img src="https://placehold.co/400x300/d9480f/ffffff?text=Pizza" alt="Mini Pizza" class="w-full h-56 object-cover">
+                            <div class="p-6 flex flex-col flex-grow">
+                                <h3 class="text-xl font-bold text-white mb-2">Mini Pizza Infusionada</h3>
+                                <p class="text-gray-300 text-sm mb-4 flex-grow">¿Buscas algo salado? Nuestra mini pizza individual viene con una base crujiente, salsa de tomate casera, mozzarella y aceite de oliva infusionado con 15mg de THC. Una experiencia cannábica gourmet única, perfecta para un aperitivo o una cena ligera. El efecto es social y eufórico.</p>
+                                <div class="flex justify-between items-center mt-4">
+                                    <span class="text-lg font-semibold text-emerald-400">$2,500</span>
+                                    <button class="add-to-cart-btn btn-secondary text-white font-semibold py-2 px-4 rounded-lg text-sm" data-id="10" data-name="Mini Pizza Infusionada" data-price="2500" data-image="https://placehold.co/100x100/d9480f/ffffff?text=Pizza">Añadir</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            
+            <!-- Concentrados Detail Section (hidden by default) -->
+            <section id="concentrados-detalle" class="py-16 md:py-24 hidden">
+                <div class="container mx-auto px-6">
+                    <div class="flex justify-between items-center mb-12">
+                         <h2 class="text-3xl md:text-4xl font-bold section-title text-white">Nuestros Concentrados</h2>
+                         <button class="back-to-main-btn btn-primary text-white font-semibold py-2 px-4 rounded-lg flex items-center">
+                            <i class="fas fa-arrow-left mr-2"></i>Volver
+                         </button>
+                    </div>
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                        <!-- Concentrado 1 -->
+                        <div class="card-bg rounded-lg overflow-hidden shadow-lg flex flex-col">
+                            <img src="https://placehold.co/400x300/f7b801/ffffff?text=Shatter" alt="Shatter" class="w-full h-56 object-cover">
+                            <div class="p-6 flex flex-col flex-grow">
+                                <h3 class="text-xl font-bold text-white mb-2">Shatter</h3>
+                                <p class="text-gray-300 text-sm mb-4 flex-grow"><strong>Forma:</strong> Liso, translúcido y quebradizo como vidrio.<br><strong>Textura:</strong> Sólido a temperatura ambiente.<br><strong>Potencia:</strong> Alta (hasta 80-90% THC).<br><strong>Uso típico:</strong> Dabbing.<br><strong>Popularidad:</strong> Muy alto por su pureza y estética.</p>
+                                <div class="flex justify-between items-center mt-4">
+                                    <span class="text-lg font-semibold text-emerald-400">$4,800</span>
+                                    <button class="add-to-cart-btn btn-secondary text-white font-semibold py-2 px-4 rounded-lg text-sm" data-id="11" data-name="Shatter" data-price="4800" data-image="https://placehold.co/100x100/f7b801/ffffff?text=Shatter">Añadir</button>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Concentrado 2 -->
+                        <div class="card-bg rounded-lg overflow-hidden shadow-lg flex flex-col">
+                            <img src="https://placehold.co/400x300/f3dca3/1f2937?text=Budder" alt="Budder / Batter" class="w-full h-56 object-cover">
+                            <div class="p-6 flex flex-col flex-grow">
+                                <h3 class="text-xl font-bold text-white mb-2">Budder / Batter</h3>
+                                <p class="text-gray-300 text-sm mb-4 flex-grow"><strong>Forma:</strong> Cremoso, parecido a manteca batida.<br><strong>Textura:</strong> Suave, fácil de manipular.<br><strong>Potencia:</strong> Alta.<br><strong>Uso:</strong> Dabbing o vaporización.<br><strong>Ventaja:</strong> Más fácil de manejar que el shatter.</p>
+                                 <div class="flex justify-between items-center mt-4">
+                                    <span class="text-lg font-semibold text-emerald-400">$4,500</span>
+                                    <button class="add-to-cart-btn btn-secondary text-white font-semibold py-2 px-4 rounded-lg text-sm" data-id="12" data-name="Budder / Batter" data-price="4500" data-image="https://placehold.co/100x100/f3dca3/1f2937?text=Budder">Añadir</button>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Concentrado 3 -->
+                        <div class="card-bg rounded-lg overflow-hidden shadow-lg flex flex-col">
+                            <img src="https://placehold.co/400x300/f3e5ab/1f2937?text=Live+Rosin" alt="Live Rosin" class="w-full h-56 object-cover">
+                            <div class="p-6 flex flex-col flex-grow">
+                                <h3 class="text-xl font-bold text-white mb-2">Live Rosin</h3>
+                                <p class="text-gray-300 text-sm mb-4 flex-grow"><strong>Extracción:</strong> Sin solventes (presión y calor).<br><strong>Textura:</strong> Cremosa o pegajosa.<br><strong>Popularidad:</strong> Alta en mercados orgánicos o "limpios".<br><strong>Valor:</strong> Más caro por ser artesanal y sin químicos.</p>
+                                <div class="flex justify-between items-center mt-4">
+                                    <span class="text-lg font-semibold text-emerald-400">$6,000</span>
+                                    <button class="add-to-cart-btn btn-secondary text-white font-semibold py-2 px-4 rounded-lg text-sm" data-id="13" data-name="Live Rosin" data-price="6000" data-image="https://placehold.co/100x100/f3e5ab/1f2937?text=Rosin">Añadir</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-gray-900 border-t border-gray-700">
+        <div class="container mx-auto px-6 py-8">
+            <div class="flex flex-col md:flex-row justify-between items-center text-center md:text-left">
+                <p class="text-gray-400 mb-4 md:mb-0">&copy; 2025 Verde Esencia. Todos los derechos reservados, By Juan M Barrientos.</p>
+                <div class="flex space-x-4 mb-4 md:mb-0">
+                    <a href="#" class="text-gray-400 hover:text-emerald-400 transition"><i class="fab fa-instagram text-2xl"></i></a>
+                    <a href="#" class="text-gray-400 hover:text-emerald-400 transition"><i class="fab fa-facebook text-2xl"></i></a>
+                    <a href="#" class="text-gray-400 hover:text-emerald-400 transition"><i class="fab fa-twitter text-2xl"></i></a>
+                </div>
+                <p class="text-xs text-gray-500 max-w-sm">El consumo de cannabis es responsabilidad del usuario. Producto para mayores de 21 años. Consulta a tu médico.</p>
+            </div>
+        </div>
+    </footer>
+    
+    <!-- Shopping Cart Sidebar -->
+    <div id="cart-overlay" class="fixed inset-0 bg-black bg-opacity-50 z-50 hidden"></div>
+    <div id="cart-sidebar" class="fixed top-0 right-0 h-full w-full max-w-sm text-white z-50 transform translate-x-full shadow-2xl flex flex-col">
+        <!-- Cart Header -->
+        <div class="flex justify-between items-center p-4 border-b border-gray-700">
+            <h2 class="text-xl font-bold">Tu Carrito</h2>
+            <button id="close-cart-btn" class="focus:outline-none text-2xl">&times;</button>
+        </div>
+        <!-- Cart Items -->
+        <div id="cart-items" class="flex-grow p-4 overflow-y-auto">
+            <p id="cart-empty-msg" class="text-gray-400 text-center mt-8">Tu carrito está vacío.</p>
+        </div>
+        <!-- Cart Footer -->
+        <div class="p-4 border-t border-gray-700">
+            <div class="flex justify-between items-center mb-4">
+                <span class="text-lg font-semibold">Subtotal:</span>
+                <span id="cart-subtotal" class="text-lg font-bold text-emerald-400">$0</span>
+            </div>
+            <button id="checkout-btn" class="w-full btn-primary text-white font-bold py-3 rounded-lg">Finalizar Compra</button>
+        </div>
+    </div>
+    
+    <!-- Location Selection Modal -->
+    <div id="location-modal" class="fixed inset-0 bg-black bg-opacity-70 z-50 hidden items-center justify-center p-4">
+        <div class="card-bg p-8 rounded-lg w-full max-w-md">
+            <h3 class="text-2xl font-bold text-white mb-6 text-center">Selecciona la sucursal de retiro</h3>
+            <div class="space-y-4">
+                <div>
+                    <input type="radio" id="palermo" name="location" value="Sucursal Palermo" data-phone="5491169578193">
+                    <label for="palermo">
+                        <span class="font-bold">Sucursal Palermo</span><br>
+                        <span class="text-sm text-gray-400">Jorge Luis Borges 1700, CABA</span>
+                    </label>
+                </div>
+                <div>
+                    <input type="radio" id="san-telmo" name="location" value="Sucursal San Telmo" data-phone="5491154250259">
+                    <label for="san-telmo">
+                        <span class="font-bold">Sucursal San Telmo</span><br>
+                        <span class="text-sm text-gray-400">Defensa 900, CABA</span>
+                    </label>
+                </div>
+            </div>
+            <div id="location-error" class="text-red-500 text-sm text-center mt-4 hidden">Por favor, selecciona una sucursal.</div>
+            <div class="mt-8 flex justify-end space-x-4">
+                <button id="cancel-location-btn" class="btn-secondary text-white font-semibold py-2 px-4 rounded-lg">Cancelar</button>
+                <button id="confirm-checkout-btn" class="btn-primary text-white font-semibold py-2 px-4 rounded-lg">Confirmar Pedido</button>
+            </div>
+        </div>
+    </div>
+
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // --- Element Selection ---
+            const mobileMenuButton = document.getElementById('mobile-menu-button');
+            const mobileMenu = document.getElementById('mobile-menu');
+            const cartIcon = document.getElementById('cart-icon');
+            const cartSidebar = document.getElementById('cart-sidebar');
+            const closeCartBtn = document.getElementById('close-cart-btn');
+            const cartOverlay = document.getElementById('cart-overlay');
+            const cartItemsContainer = document.getElementById('cart-items');
+            const cartCount = document.getElementById('cart-count');
+            const cartSubtotal = document.getElementById('cart-subtotal');
+            const cartEmptyMsg = document.getElementById('cart-empty-msg');
+            const checkoutBtn = document.getElementById('checkout-btn');
+
+            const mainContent = document.getElementById('main-content');
+            
+            const floresCategoryLink = document.getElementById('flores-category-link');
+            const floresDetailSection = document.getElementById('flores-detalle');
+            
+            const comestiblesCategoryLink = document.getElementById('comestibles-category-link');
+            const comestiblesDetailSection = document.getElementById('comestibles-detalle');
+            
+            const concentradosCategoryLink = document.getElementById('concentrados-category-link');
+            const concentradosDetailSection = document.getElementById('concentrados-detalle');
+
+            const backToMainBtns = document.querySelectorAll('.back-to-main-btn');
+
+            const locationModal = document.getElementById('location-modal');
+            const cancelLocationBtn = document.getElementById('cancel-location-btn');
+            const confirmCheckoutBtn = document.getElementById('confirm-checkout-btn');
+            const locationError = document.getElementById('location-error');
+
+
+            let cart = [];
+
+            // --- Event Listeners ---
+            mobileMenuButton.addEventListener('click', () => mobileMenu.classList.toggle('hidden'));
+            
+            const mobileMenuLinks = mobileMenu.getElementsByTagName('a');
+            for (let link of mobileMenuLinks) {
+                link.addEventListener('click', () => mobileMenu.classList.add('hidden'));
+            }
+
+            cartIcon.addEventListener('click', toggleCart);
+            closeCartBtn.addEventListener('click', toggleCart);
+            cartOverlay.addEventListener('click', toggleCart);
+
+            document.body.addEventListener('click', (e) => {
+                if (e.target.classList.contains('add-to-cart-btn')) {
+                    const button = e.target;
+                    const id = button.dataset.id;
+                    const name = button.dataset.name;
+                    const price = parseInt(button.dataset.price);
+                    const image = button.dataset.image;
+                    addToCart({ id, name, price, image });
+                }
+            });
+            
+            cartItemsContainer.addEventListener('click', (e) => {
+                 if(e.target.classList.contains('remove-item-btn') || e.target.parentElement.classList.contains('remove-item-btn')) {
+                    const id = e.target.closest('.cart-item').dataset.id;
+                    removeFromCart(id);
+                 }
+                 if(e.target.classList.contains('quantity-change')) {
+                    const id = e.target.closest('.cart-item').dataset.id;
+                    const change = parseInt(e.target.dataset.change);
+                    changeQuantity(id, change);
+                 }
+            });
+
+            checkoutBtn.addEventListener('click', () => {
+                locationModal.classList.remove('hidden');
+                locationModal.classList.add('flex');
+            });
+
+            cancelLocationBtn.addEventListener('click', () => {
+                 locationModal.classList.add('hidden');
+                 locationModal.classList.remove('flex');
+            });
+
+            confirmCheckoutBtn.addEventListener('click', () => {
+                const selectedLocationInput = document.querySelector('input[name="location"]:checked');
+                if (selectedLocationInput) {
+                    const locationName = selectedLocationInput.value;
+                    const phoneNumber = selectedLocationInput.dataset.phone;
+                    handleCheckout(locationName, phoneNumber);
+                    locationModal.classList.add('hidden');
+                    locationModal.classList.remove('flex');
+                    locationError.classList.add('hidden');
+                } else {
+                    locationError.classList.remove('hidden');
+                }
+            });
+
+            function showDetailSection(sectionToShow) {
+                mainContent.classList.add('hidden');
+                floresDetailSection.classList.add('hidden');
+                comestiblesDetailSection.classList.add('hidden');
+                concentradosDetailSection.classList.add('hidden');
+                
+                sectionToShow.classList.remove('hidden');
+                window.scrollTo(0, document.querySelector('.hero-section').offsetHeight);
+            }
+
+            floresCategoryLink.addEventListener('click', (e) => {
+                e.preventDefault();
+                showDetailSection(floresDetailSection);
+            });
+            
+            comestiblesCategoryLink.addEventListener('click', (e) => {
+                e.preventDefault();
+                showDetailSection(comestiblesDetailSection);
+            });
+            
+            concentradosCategoryLink.addEventListener('click', (e) => {
+                e.preventDefault();
+                showDetailSection(concentradosDetailSection);
+            });
+
+            backToMainBtns.forEach(btn => {
+                btn.addEventListener('click', () => {
+                    floresDetailSection.classList.add('hidden');
+                    comestiblesDetailSection.classList.add('hidden');
+                    concentradosDetailSection.classList.add('hidden');
+                    mainContent.classList.remove('hidden');
+                });
+            });
+
+
+            // --- Functions ---
+            function toggleCart() {
+                cartSidebar.classList.toggle('translate-x-full');
+                cartOverlay.classList.toggle('hidden');
+            }
+
+            function addToCart(product) {
+                const existingProduct = cart.find(item => item.id === product.id);
+                if (existingProduct) {
+                    existingProduct.quantity++;
+                } else {
+                    cart.push({ ...product, quantity: 1 });
+                }
+                updateCart();
+            }
+
+            function removeFromCart(id) {
+                cart = cart.filter(item => item.id !== id);
+                updateCart();
+            }
+
+            function changeQuantity(id, change) {
+                 const product = cart.find(item => item.id === id);
+                 if (product) {
+                     product.quantity += change;
+                     if (product.quantity <= 0) {
+                         removeFromCart(id);
+                     } else {
+                        updateCart();
+                     }
+                 }
+            }
+            
+            function updateCart() {
+                renderCartItems();
+                updateCartCount();
+                updateSubtotal();
+                
+                if(cart.length === 0) {
+                    cartEmptyMsg.style.display = 'block';
+                    checkoutBtn.disabled = true;
+
+                } else {
+                    cartEmptyMsg.style.display = 'none';
+                    checkoutBtn.disabled = false;
+                }
+            }
+
+            function renderCartItems() {
+                cartItemsContainer.innerHTML = ''; 
+                if(cart.length === 0) {
+                    cartItemsContainer.appendChild(cartEmptyMsg);
+                    return;
+                }
+                
+                cart.forEach(item => {
+                    const cartItemEl = document.createElement('div');
+                    cartItemEl.classList.add('cart-item', 'flex', 'items-center', 'justify-between', 'py-3', 'border-b', 'border-gray-700');
+                    cartItemEl.dataset.id = item.id;
+                    cartItemEl.innerHTML = `
+                        <div class="flex items-center gap-3">
+                            <img src="${item.image}" alt="${item.name}" class="w-16 h-16 rounded object-cover">
+                            <div>
+                                <h3 class="font-semibold text-sm">${item.name}</h3>
+                                <p class="text-sm text-gray-400">$${item.price.toLocaleString('es-AR')}</p>
+                            </div>
+                        </div>
+                        <div class="flex items-center gap-3">
+                            <div class="cart-item-quantity flex items-center gap-2 bg-gray-700 rounded-md p-1">
+                                <button class="quantity-change text-lg" data-change="-1">-</button>
+                                <span class="w-5 text-center">${item.quantity}</span>
+                                <button class="quantity-change text-lg" data-change="1">+</button>
+                            </div>
+                            <button class="remove-item-btn text-red-500 hover:text-red-400 pl-2">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </div>
+                    `;
+                    cartItemsContainer.appendChild(cartItemEl);
+                });
+            }
+
+            function updateCartCount() {
+                const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
+                cartCount.textContent = totalItems;
+            }
+
+            function updateSubtotal() {
+                const subtotal = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+                cartSubtotal.textContent = `$${subtotal.toLocaleString('es-AR')}`;
+            }
+
+            function handleCheckout(selectedLocation, phoneNumber) {
+                if (cart.length === 0) return;
+
+                let message = "¡Hola Verde Esencia! 🌿\n\nQuisiera hacer el siguiente pedido:\n\n";
+
+                cart.forEach(item => {
+                    const itemTotal = item.price * item.quantity;
+                    message += `*${item.name}*\n`;
+                    message += `Cantidad: ${item.quantity} x $${item.price.toLocaleString('es-AR')} = $${itemTotal.toLocaleString('es-AR')}\n`;
+                    message += `-------------------------------------\n`;
+                });
+
+                const subtotal = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+                message += `\n*TOTAL DEL PEDIDO: $${subtotal.toLocaleString('es-AR')}*`;
+                
+                message += `\n\n*Retiro en: ${selectedLocation}*`
+                
+                message += "\n\n¡Quedo a la espera de la confirmación para coordinar el pago y la entrega/retiro!";
+
+                const whatsappUrl = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`;
+                
+                window.open(whatsappUrl, '_blank');
+            }
+
+            // Initial render
+            updateCart();
+        });
+    </script>
+
+</body>
+</html>
